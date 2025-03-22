@@ -21,6 +21,7 @@
 #include <stdarg.h>
 #include <stdlib.h> // realpath()
 #include <stdexcept>
+#include "dev_qnap_tr004.h" // QNAP TR-004 Support
 
 const char * dev_interface_cpp_cvsid = "$Id$"
   DEV_INTERFACE_H_CVSID;
@@ -496,6 +497,21 @@ smart_device * smart_interface::get_smart_device(const char * name, const char *
       return set_err_np(EINVAL, "Type '%s': Device type '%s' is not ATA", type, basetype);
     return get_intelliprop_device(itltype.c_str(), basedev.release()->to_ata());
   }
+
+else if (str_starts_with(type, "qnaptr")) {
+  int disk_number = 0;
+  bool force = false;
+  uint64_t start_lba = 0;
+  const char * subtype = parse_options(type + 6, &disk_number, &start_lba, &force);
+  // Recurse to allocate base device, default is ATA (TR-004 is SATA over USB)
+  const char * basetype = (subtype && *subtype) ? subtype : "ata";
+  smart_device_auto_ptr basedev(get_smart_device(name, basetype));
+  if (!basedev)
+    return set_err_np(EINVAL, "Type 'qnaptr%s': %s", type + 6, get_errmsg());
+  if (!basedev->is_ata())
+    return set_err_np(EINVAL, "Type 'qnaptr': Base type '%s' is not ATA", basetype);
+  return smart_device_auto_ptr(new qnaptr_device(this, name, disk_number, start_lba, force));
+}
 
   else {
     return set_err_np(EINVAL, "Unknown device type '%s'", type);

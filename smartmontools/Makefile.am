@@ -76,6 +76,8 @@ smartctl_SOURCES = \
         dev_interface.cpp \
         dev_interface.h \
         dev_jmb39x_raid.cpp \
+        dev_qnap_tr004.cpp \
+        dev_qnap_tr004.h \
         dev_tunnelled.h \
         drivedb.h \
         farmcmds.cpp \

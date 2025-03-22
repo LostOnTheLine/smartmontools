@@ -1,0 +1,38 @@
+name: Build smartmontools for Windows
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install MSYS2
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW64
+        update: true
+        install: >-
+          base-devel
+          mingw-w64-x86_64-toolchain
+          mingw-w64-x86_64-libcap
+          mingw-w64-x86_64-pkg-config
+
+    - name: Configure and Build
+      shell: msys2 {0}
+      run: |
+        ./configure --host=x86_64-w64-mingw32 --prefix=/usr/local
+        make
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: smartctl-windows
+        path: smartctl/smartctl.exe
