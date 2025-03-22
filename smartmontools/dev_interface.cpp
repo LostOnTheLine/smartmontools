@@ -502,8 +502,8 @@ else if (str_starts_with(type, "qnaptr")) {
   int disk_number = 0;
   bool force = false;
   uint64_t start_lba = 0;
-  const char * subtype = parse_options(type + 6, &disk_number, &start_lba, &force);
-  // Recurse to allocate base device, default is ATA (TR-004 is SATA over USB)
+  const char * subtype = parse_qnaptr_options(type + 6, &disk_number, &start_lba, &force);
+  // Recurse to allocate base device, default is ATA
   const char * basetype = (subtype && *subtype) ? subtype : "ata";
   smart_device_auto_ptr basedev(get_smart_device(name, basetype));
   if (!basedev)
