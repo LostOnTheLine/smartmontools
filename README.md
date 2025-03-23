@@ -1,5 +1,8 @@
 ## About Smartmontools
 
+# NOTE: This is an attempt to merge [@mallendeo's smartctl support for USB QNAP TR-004](https://gist.github.com/mallendeo/48dc3d6edbbb40c166dfee987c7ef765) with a modern version of smartmontools since it is built off a 6 year old [Fork by @slade87](https://github.com/slade87/smartmontools) that was never incorporated into the main & is 600 commits behind.
+As of now it is not working. I am not familiar with C++ and am mostly using `Grok` to try to figure it out... But it is not working out too well
+
 The smartmontools package contains two utility programs (`smartctl` and `smartd`) 
 to control and monitor storage systems using the **Self-Monitoring, Analysis and 
 Reporting Technology System** (SMART) built into most modern ATA/SATA, SCSI/SAS and NVMe disks. 
