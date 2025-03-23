@@ -231,7 +231,11 @@ static std::string getvalidarglist(int opt)
   case 'q':
     return "errorsonly, silent, noserial";
   case 'd':
-    return smi()->get_valid_dev_types_str() + ", auto, test";
+  {
+    std::string types = smi()->get_valid_dev_types_str() + ", auto, test";
+    printf("DEBUG: Device types = %s\n", types.c_str());
+    return types;
+  }
   case 'T':
     return "normal, conservative, permissive, verypermissive";
   case 'b':
