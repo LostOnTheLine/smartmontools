@@ -4053,10 +4053,19 @@ bool win10_nvme_device::nvme_pass_through(const nvme_cmd_in & in, nvme_cmd_out &
 // win_smart_interface
 // Platform specific interface
 
-class win_smart_interface
+class win_smart_interface 
 : public /*implements*/ smart_interface
 {
 public:
+  virtual std::string get_valid_dev_types_str() override
+  {
+    std::string s = smart_interface::get_valid_dev_types_str();
+    if (s.find("qnaptr") == std::string::npos)
+      s += ", qnaptr[,N][,sLBA][,force]";
+    return s;
+  }
+  // ...
+};
   virtual std::string get_os_version_str() override;
 
   virtual std::string get_app_examples(const char * appname) override;
